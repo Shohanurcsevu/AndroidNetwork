@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:padding="8dp"
+    android:layout_marginTop="5dp"
+    android:background="#ffffff">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        tools:srcCompat="@tools:sample/avatars"
+        android:background="@drawable/loading_shape"/>
+
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="130dp"
+           android:padding="8dp"
+           android:orientation="vertical">
+
+
+           <LinearLayout
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:layout_marginTop="30dp">
+
+               <TextView
+                   android:id="@+id/tvFirstName"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="First Name"
+               android:textStyle="bold"
+               android:textSize="16sp"/>
+
+               <TextView
+                   android:id="@+id/tvLastName"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="Last Name"
+                   android:layout_marginLeft="10dp"
+                   android:textStyle="bold"
+                   android:textSize="16sp"/>
+
+
+           </LinearLayout>
+
+           <TextView
+               android:id="@+id/tvEmail"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+
+               android:text="shohanurvu@gmail.com"
+               android:textSize="14dp"/>
+
+
+
+       </LinearLayout>
+
+
+</LinearLayout>
