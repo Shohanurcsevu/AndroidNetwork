@@ -28,12 +28,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private  String url="https://reqres.in/api/users";
+
 
     private  RecyclerView recyclerView;
     private  LinearLayoutManager linearLayoutManager;
     private List<User> users;
     private RecyclerView.Adapter adapter;
+    private RequestQueue requestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,54 +47,50 @@ public class MainActivity extends AppCompatActivity {
         linearLayoutManager=new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
-        
-        getData();
+        requestQueue=Volley.newRequestQueue(this);
+
+
+        parseJSON();
 
 
     }
 
-    private void getData() {
+    private void parseJSON() {
+        String url="https://reqres.in/api/users?page=2";
 
-        final ProgressDialog progressDialog=new ProgressDialog(this);
-        progressDialog.setMessage("Loading");
-        JsonArrayRequest jsonArrayRequest =new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONArray jsonArray = response.getJSONArray("data");
 
-                for(int i=0;i<response.length();i++)
-                {
-                    try
-                    {
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject hit = jsonArray.getJSONObject(i);
 
+                                User user=new User();
+                                user.setFirstname(hit.getString("first_name"));
+                                user.setLastName(hit.getString("last_name"));
+                                user.setEmail(hit.getString("email"));
+                                user.setImage_url(hit.getString("avatar"));
+                                users.add(user);
+                            }
 
-                       JSONObject jsonObject=response.getJSONObject(i);
-                        User user=new User();
-                        user.setFirstname(jsonObject.getString("first_name"));
-                        user.setLastName(jsonObject.getString("last_name"));
-                        user.setEmail(jsonObject.getString("email"));
-                        user.setImage_url(jsonObject.getString("avatar"));
-                        users.add(user);
+                            adapter = new UserAdapter(MainActivity.this, users);
+                            recyclerView.setAdapter(adapter);
 
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                        progressDialog.dismiss();
-                    }
-                }
-                adapter.notifyDataSetChanged();
-                progressDialog.dismiss();
-
-            }
-        }, new Response.ErrorListener() {
+                }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Dhora khaisi",error.toString());
-
             }
         });
-        RequestQueue requestQueue=Volley.newRequestQueue(this);
-        requestQueue.add(jsonArrayRequest);
+
+        requestQueue.add(request);
     }
 
 }
